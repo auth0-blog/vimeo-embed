@@ -1,0 +1,20 @@
+{
+  "name": "vimeo-embed",
+  "homepage": "https://github.com/auth0-blog/vimeo-embed",
+  "authors": [
+    "PROSPER OTEMUYIWA <prosperotemuyiwa@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "webcomponentsjs": "^0.7.24"
+  }
+}

@@ -1,0 +1,115 @@
+<!-- Defines element markup -->
+<template>
+    <style>
+        .vimeo {
+            background-color: #000;
+            margin-bottom: 30px;
+            position: relative;
+            padding-top: 56.25%;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .vimeo img {
+            width: 100%;
+            top: -16.82%;
+            left: 0;
+            opacity: 0.7;
+        }
+        .vimeo .play-button {
+            width: 90px;
+            height: 60px;
+            background-color: #333;
+            box-shadow: 0 0 30px rgba( 0,0,0,0.6 );
+            z-index: 1;
+            opacity: 0.8;
+            border-radius: 6px;
+        }
+        .vimeo .play-button:before {
+            content: "";
+            border-style: solid;
+            border-width: 15px 0 15px 26.0px;
+            border-color: transparent transparent transparent #fff;
+        }
+        .vimeo img,
+        .vimeo .play-button {
+            cursor: pointer;
+        }
+        .vimeo img,
+        .vimeo iframe,
+        .vimeo .play-button,
+        .vimeo .play-button:before {
+            position: absolute;
+        }
+        .vimeo .play-button,
+        .vimeo .play-button:before {
+            top: 50%;
+            left: 50%;
+            transform: translate3d( -50%, -50%, 0 );
+        }
+        .vimeo iframe {
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <div class="vimeo">
+        <div class="play-button"></div>
+    </div>
+</template>
+
+<script>
+(function(window, document, undefined) {
+
+    // Refers to the "importer", which is index.html
+    var thatDoc = document;
+
+    // Refers to the "importee", which is youtube-embed.html
+    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+
+    // Gets content from <template>.
+    var template = thisDoc.querySelector( 'template' ).content;
+
+    // Shim Shadow DOM styles if needed
+    if (window.ShadowDOMPolyfill) {
+        WebComponents.ShadowCSS.shimStyling(template, 'vimeo');
+    }
+
+    class VimeoEmbed extends HTMLElement {
+
+        constructor() {
+            super();
+            var shadowRoot =  this.attachShadow({mode:'open'});
+           
+            // Adds a template clone into shadow root.
+            var clone = thatDoc.importNode( template, true );
+                shadowRoot.appendChild( clone );
+
+            var embed = this.getAttribute( "embed" );
+            var video = shadowRoot.querySelector( ".vimeo" );
+
+            this.createAndPlay( embed, video );
+        }
+
+
+        createAndPlay(embedID, videoElem) {
+            videoElem.addEventListener( "click", function() {
+
+                var iframe = document.createElement( "iframe" );
+
+                    iframe.setAttribute( "frameborder", "0" );
+                    iframe.setAttribute( "allowfullscreen", "" );
+                    iframe.setAttribute( "webkitallowfullscreen", "" );
+                    iframe.setAttribute( "mozallowfullscreen", "" );
+                    iframe.setAttribute( "src", "https://player.vimeo.com/video/" + embedID + "?autoplay=1" );
+                    iframe.setAttribute( "width", "640");
+                    iframe.setAttribute( "height", "360");
+
+                    this.innerHTML = "";
+                    this.appendChild( iframe );
+            });
+        }
+    }
+    window.customElements.define('vimeo-embed', VimeoEmbed);
+})(window, document);
+</script>

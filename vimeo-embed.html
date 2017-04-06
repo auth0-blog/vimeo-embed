@@ -79,18 +79,21 @@
 
         constructor() {
             super();
-            var shadowRoot =  this.attachShadow({mode:'open'});
-           
-            // Adds a template clone into shadow root.
-            var clone = thatDoc.importNode( template, true );
-                shadowRoot.appendChild( clone );
-
-            var embed = this.getAttribute( "embed" );
-            var video = shadowRoot.querySelector( ".vimeo" );
-
-            this.createAndPlay( embed, video );
         }
 
+        connectedCallback() {
+            var shadowRoot = this.attachShadow({mode:'open'});  
+
+            // Adds a template clone into shadow root.
+            var clone = thatDoc.importNode( template, true );
+            shadowRoot.appendChild(clone);
+
+            // get the value of the "embed" attribute
+            var embed = this.getAttribute("embed");
+            
+            var video = shadowRoot.querySelector( ".vimeo" );
+            this.createAndPlay(embed, video);
+        }
 
         createAndPlay(embedID, videoElem) {
             videoElem.addEventListener( "click", function() {

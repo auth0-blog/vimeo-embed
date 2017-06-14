@@ -5,7 +5,7 @@ Embed Vimeo videos in your web apps.
 ## Installation
 
 ```sh
-$ bower install unicodeveloper/vimeo-embed --save
+$ bower install auth0-blog/vimeo-embed --save
 ```
 
 ## Usage
